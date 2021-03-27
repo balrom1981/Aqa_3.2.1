@@ -26,48 +26,12 @@ public class DataHelper {
     }
 
     @Value
-    public static class VerificationId {
-        private String id;
-    }
-
-    public static VerificationId getVerificationIdForVasya() throws SQLException {
-        val idSql = "SELECT id FROM users WHERE login='vasya';";
-
-
-        try (
-                val conn = getConnection("jdbc:mysql://localhost:3306/app", "user", "pass");
-                val idStmt = conn.createStatement();
-
-        ) {
-            try (val rs = idStmt.executeQuery(idSql)) {
-                if (rs.next()) {
-                    val id = rs.getString(1);
-
-                    return new VerificationId(id);
-
-                }
-                return null;
-            }
-        }
-    }
-
-//    @Value
-//    public static class VerificationPassword {
-//        private String password;
-//    }
-//
-//    public static VerificationPassword getVerificationPasswordForVasya() {
-//        return new VerificationPassword("qwerty123");
-//    }
-
-        @Value
     public static class VerificationCode {
         private String code;
     }
 
-    public static VerificationCode getVerificationCodeForVasya() throws SQLException {
-        VerificationId verificationId=new VerificationId(getVerificationIdForVasya().id);
-        val codeSql = "SELECT code FROM auth_codes WHERE user_id=user_id;";
+    public static VerificationCode getVerificationCode() throws SQLException {
+        val codeSql = "SELECT code FROM auth_codes WHERE user_id";
 
 
         try (
@@ -84,8 +48,6 @@ public class DataHelper {
                 }
                 return null;
             }
-
-
 
         }
     }
