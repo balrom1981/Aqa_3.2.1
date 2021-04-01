@@ -1,6 +1,7 @@
 package ru.netology.web.test;
 
 import lombok.val;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.web.data.DataHelper;
@@ -13,16 +14,10 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class LoginPageTest {
 
-    @BeforeEach
-    void shouldCleanAuthCodes() throws SQLException {
-        val codes = "DELETE FROM auth_codes where code";
-
-        try (val connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "user", "pass");
-             val prepareStatCode = connect.prepareStatement(codes);) {
-            prepareStatCode.executeUpdate(codes);
-        }
+    @AfterAll
+    static void shouldCleanMySql () throws SQLException{
+        DataHelper.cleanMySql();
     }
-
 
     @Test
     void shouldVerifyVasya() throws SQLException {

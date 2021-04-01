@@ -3,6 +3,7 @@ package ru.netology.web.data;
 import lombok.Value;
 import lombok.val;
 
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import static java.sql.DriverManager.getConnection;
@@ -44,11 +45,30 @@ public class DataHelper {
                     val code = rs.getString(1);
 
                     return new VerificationCode(code);
-
                 }
                 return null;
             }
 
+        }
+    }
+
+    public static void cleanMySql() throws SQLException{
+
+        val codes = "DELETE FROM auth_codes where id";
+        val users = "DELETE FROM users where id";
+        val cards = "DELETE FROM cards where id";
+        val transactions = "DELETE FROM card_transactions where id";
+
+        try (val connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "user", "pass");
+             val prepareStatCode = connect.prepareStatement(codes);
+             val prepareStatUser = connect.prepareStatement(users);
+             val prepareStatCard = connect.prepareStatement(cards);
+             val prepareStatTransactions = connect.prepareStatement(transactions);
+        ) {
+            prepareStatCode.executeUpdate(codes);
+            prepareStatUser.executeUpdate(users);
+            prepareStatCard.executeUpdate(cards);
+            prepareStatTransactions.executeUpdate(transactions);
         }
     }
 
