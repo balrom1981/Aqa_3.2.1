@@ -6,8 +6,6 @@ import ru.netology.web.data.DataHelper;
 import ru.netology.web.page.LoginPage;
 
 
-import java.sql.SQLException;
-
 import static com.codeborne.selenide.Selenide.open;
 
 public class LoginPageTest {
@@ -18,7 +16,7 @@ public class LoginPageTest {
     }
 
     @Test
-    void shouldVerifyVasya() throws SQLException {
+    void shouldVerifyVasya(){
         val loginPage = open("http://localhost:9999", LoginPage.class);
         val authInfo = DataHelper.getAuthInfo();
         val verificationPage = loginPage.validLogin(authInfo);
@@ -28,7 +26,7 @@ public class LoginPageTest {
     }
 
     @Test
-    void shouldVerifyPetya() throws SQLException {
+    void shouldVerifyPetya(){
         val loginPage = open("http://localhost:9999", LoginPage.class);
         val authInfo = DataHelper.getOtherAuthInfo();
         val verificationPage = loginPage.validLogin(authInfo);

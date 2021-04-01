@@ -31,14 +31,12 @@ public class DataHelper {
         private String code;
     }
 
-    public static VerificationCode getVerificationCode() throws SQLException {
+    public static VerificationCode getVerificationCode() {
         val codeSql = "SELECT code FROM auth_codes WHERE user_id";
-
 
         try (
                 val connection = getConnection("jdbc:mysql://localhost:3306/app", "user", "pass");
                 val codeStmt = connection.createStatement();
-
         ) {
             try (val rs = codeStmt.executeQuery(codeSql)) {
                 if (rs.next()) {
@@ -48,27 +46,30 @@ public class DataHelper {
                 }
                 return null;
             }
-
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
         }
     }
 
     public static void cleanMySql() {
 
         val codes = "DELETE FROM auth_codes code";
-//        val users = "DELETE FROM users where id";
-        val cards = "DELETE FROM cards where balance_in_kopecks";
         val transactions = "DELETE FROM card_transactions where created";
+        val cards = "DELETE FROM cards where balance_in_kopecks";
+//        val users = "DELETE FROM users where id";
 
         try (val connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "user", "pass");
              val prepareStatCode = connect.prepareStatement(codes);
-//             val prepareStatUser = connect.prepareStatement(users);
-             val prepareStatCard = connect.prepareStatement(cards);
              val prepareStatTransactions = connect.prepareStatement(transactions);
+             val prepareStatCard = connect.prepareStatement(cards);
+//             val prepareStatUser = connect.prepareStatement(users);
+
+
         ) {
             prepareStatCode.executeUpdate(codes);
-//            prepareStatUser.executeUpdate(users);
-            prepareStatCard.executeUpdate(cards);
             prepareStatTransactions.executeUpdate(transactions);
+            prepareStatCard.executeUpdate(cards);
+//            prepareStatUser.executeUpdate(users);
 
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
