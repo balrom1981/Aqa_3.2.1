@@ -52,24 +52,28 @@ public class DataHelper {
         }
     }
 
-    public static void cleanMySql() throws SQLException{
+    public static void cleanMySql() {
 
-        val codes = "DELETE FROM auth_codes where id";
-        val users = "DELETE FROM users where id";
-        val cards = "DELETE FROM cards where id";
-        val transactions = "DELETE FROM card_transactions where id";
+        val codes = "DELETE FROM auth_codes code";
+//        val users = "DELETE FROM users where id";
+        val cards = "DELETE FROM cards where balance_in_kopecks";
+        val transactions = "DELETE FROM card_transactions where created";
 
         try (val connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "user", "pass");
              val prepareStatCode = connect.prepareStatement(codes);
-             val prepareStatUser = connect.prepareStatement(users);
+//             val prepareStatUser = connect.prepareStatement(users);
              val prepareStatCard = connect.prepareStatement(cards);
              val prepareStatTransactions = connect.prepareStatement(transactions);
         ) {
             prepareStatCode.executeUpdate(codes);
-            prepareStatUser.executeUpdate(users);
+//            prepareStatUser.executeUpdate(users);
             prepareStatCard.executeUpdate(cards);
             prepareStatTransactions.executeUpdate(transactions);
+
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
         }
     }
 
 }
+

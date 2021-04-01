@@ -1,21 +1,19 @@
 package ru.netology.web.test;
 
 import lombok.val;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import ru.netology.web.data.DataHelper;
 import ru.netology.web.page.LoginPage;
 
-import java.sql.DriverManager;
+
 import java.sql.SQLException;
 
 import static com.codeborne.selenide.Selenide.open;
 
 public class LoginPageTest {
 
-    @AfterAll
-    static void shouldCleanMySql () throws SQLException{
+    @BeforeEach
+    void shouldCleanMySql () {
         DataHelper.cleanMySql();
     }
 
