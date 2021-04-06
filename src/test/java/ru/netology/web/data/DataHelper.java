@@ -32,7 +32,7 @@ public class DataHelper {
     }
 
     public static VerificationCode getVerificationCode() {
-        val codeSql = "SELECT code FROM auth_codes WHERE user_id";
+        val codeSql = "SELECT code FROM auth_codes ORDER BY created DESC LIMIT 1";
 
         try (
                 val connection = getConnection("jdbc:mysql://localhost:3306/app", "user", "pass");
@@ -53,10 +53,10 @@ public class DataHelper {
 
     public static void cleanMySql() {
 
-        val codes = "DELETE FROM auth_codes code";
-        val transactions = "DELETE FROM card_transactions where created";
-        val cards = "DELETE FROM cards where balance_in_kopecks";
-        val users = "DELETE FROM users where id";
+        val codes = "DELETE FROM auth_codes";
+        val transactions = "DELETE FROM card_transactions";
+        val cards = "DELETE FROM cards";
+        val users = "DELETE FROM users";
 
         try (val connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "user", "pass");
              val prepareStatCode = connect.prepareStatement(codes);

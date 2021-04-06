@@ -10,8 +10,8 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class LoginPageTest {
 
-    @BeforeEach
-    void shouldCleanMySql () {
+    @AfterAll
+    static void shouldCleanMySql () {
         DataHelper.cleanMySql();
     }
 
